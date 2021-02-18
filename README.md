@@ -1,6 +1,7 @@
 # pineapple
 pineapple programming language demo.
 
+```
 SourceCharacter ::=  #x0009 | #x000A | #x000D | [#x0020-#xFFFF]
 Name            ::= [_A-Za-z][_0-9A-Za-z]*
 StringCharacter ::= SourceCharacter - '"'
@@ -16,3 +17,4 @@ Div            ::= "Div" "(" Ignored VariableInt Ignored "," Ignored VariableInt
 Print           ::= "print" "(" Ignored Variable Ignored ")" Ignored
 Statement       ::= Print | Assignment | Add | Sub | Mult | Div
 SourceCode      ::= Statement+ 
+```

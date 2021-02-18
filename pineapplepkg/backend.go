@@ -3,6 +3,7 @@ package pineapplepkg
 import (
 	"errors"
 	"fmt"
+	"strconv"
 )
 
 func Execute(code string) {
@@ -42,6 +43,7 @@ func resolveStatement(g *GlobalVariables, statement Statement) error {
 	} else {
 		return errors.New("resolveStatement(): undefined statement type.")
 	}
+
 }
 
 func resolveAssignment(g *GlobalVariables, assignment *Assignment) error {
@@ -49,7 +51,8 @@ func resolveAssignment(g *GlobalVariables, assignment *Assignment) error {
 	if varName = assignment.variable.name; varName == "" {
 		return errors.New("resolveAssignment(): variable name can NOT be empty.")
 	}
-	g.Variables[varName] = assignment.value
+	varPair := NewVariablePair(assignment.variable.isStrValue, assignment.value)
+	g.Variables[varName] = varPair
 	return nil
 }
 
@@ -58,11 +61,21 @@ func resolvePrint(g *GlobalVariables, print *Print) error {
 	if varName = print.variable.name; varName == "" {
 		return errors.New("resolvePrint(): variable name can NOT be empty.")
 	}
-	str := ""
+
+	valuePair := NewVariablePair(true, "")
 	ok := false
-	if str, ok = g.Variables[varName]; !ok {
+	if valuePair, ok = g.Variables[varName]; !ok {
 		return errors.New(fmt.Sprintf("resolvePrint(): variable '$%s'not found.", varName))
 	}
-	fmt.Println(str)
+	if valuePair.isStrValue {
+		fmt.Println(valuePair.value)
+	} else {
+		if value, err := strconv.Atoi(valuePair.value); err != err {
+			return err
+		} else {
+			fmt.Println(value)
+		}
+	}
+
 	return nil
 }

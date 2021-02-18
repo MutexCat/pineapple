@@ -25,8 +25,9 @@ func parseString(lexer *Lexer) (string, error) {
 	}
 }
 
-func parseVariable(lexer *Lexer) (*Variable, error) {
+func parseVariableStr(lexer *Lexer) (*Variable, error) {
 	var variable Variable
+	variable.isStrValue = true
 	var err error
 
 	lexer.NextTokenIs(TOKEN_VARIABLE_STR)
@@ -35,6 +36,29 @@ func parseVariable(lexer *Lexer) (*Variable, error) {
 	}
 	lexer.LookAheadAndSkip(TOKEN_IGNORED)
 	return &variable, nil
+}
+
+func parseVariableInt(lexer *Lexer) (*Variable, error) {
+	var variable Variable
+	variable.isStrValue = false
+	var err error
+	lexer.NextTokenIs(TOKEN_VARIABLE_INT)
+	if variable.name, err = parseName(lexer); err != nil {
+		return nil, err
+	}
+	lexer.LookAheadAndSkip(TOKEN_IGNORED)
+	return &variable, nil
+}
+
+func parseVariable(lexer *Lexer) (*Variable, error) {
+	switch lexer.LookAhead() {
+	case TOKEN_VARIABLE_STR:
+		return parseVariableStr(lexer)
+	case TOKEN_VARIABLE_INT:
+		return parseVariableInt(lexer)
+	default:
+		return nil, errors.New("parseVariable error")
+	}
 }
 
 func parseAssignment(lexer *Lexer) (*Assignment, error) {
