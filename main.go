@@ -2,12 +2,15 @@ package main
 
 import (
 	"./pineapplepkg"
+	"fmt"
+	"io/ioutil"
+	"os"
 )
 
 func main() {
 
 	// read file
-	/*args := os.Args
+	args := os.Args
 	if len(args) != 2 {
 		fmt.Printf("Usage: %s filename\n", args[0])
 		return
@@ -17,10 +20,10 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error reading file: %s\n", filename)
 		return
-	}8*/
+	}
 
 	// execute
-
-	pineapplepkg.Execute(string("$a = \"Hello\"\nprint($a)"))
+	//"@a = \"10\"\n@b =\"20\"\n add(@a,@b)\nprint(@a)"
+	pineapplepkg.Execute(string(code))
 
 }

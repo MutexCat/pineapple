@@ -9,6 +9,7 @@ import (
 const (
 	TOKEN_EOF          = iota //EOF
 	TOKEN_NAME                //name
+	TOKEN_SEPARATE            // ,
 	TOKEN_QUOTE               // "
 	TOKEN_LEFT_PAIR           // (
 	TOKEN_RIGHT_PAIR          // )
@@ -138,6 +139,9 @@ func (lexer *Lexer) MatchToken() (int, int, string) {
 	case '=':
 		lexer.Skip(1)
 		return lexer.LineNum, TOKEN_EQUALTY, "="
+	case ',':
+		lexer.Skip(1)
+		return lexer.LineNum, TOKEN_SEPARATE, ","
 	case '"':
 		if lexer.NextLetterIs("\"\"") {
 			lexer.Skip(2)

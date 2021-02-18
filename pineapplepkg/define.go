@@ -12,28 +12,22 @@ type Assignment struct {
 	value    string
 }
 
-/*
-type AssignmentStr struct {
-	lineNum  int
-	variable *Variable
-	value    string
-}
-
-type AssignmentInt struct {
-	lineNum  int
-	variable *Variable
-	value    int
-}
-*/
 type Print struct {
 	lineNum  int
 	variable *Variable
+}
+
+type Add struct {
+	lineNUm int
+	lhs     *Variable
+	rhs     *Variable
 }
 
 type Statement interface{}
 
 var _ Statement = (*Print)(nil)
 var _ Statement = (*Assignment)(nil)
+var _ Statement = (*Add)(nil)
 
 type SourceCode struct {
 	LineNum    int

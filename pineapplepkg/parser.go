@@ -93,11 +93,54 @@ func parsePrint(lexer *Lexer) (*Print, error) {
 	return &print, err
 }
 
+func parseAdd(lexer *Lexer) (*Add, error) {
+	var add Add
+	var err error
+
+	lexer.NextTokenIs(TOKEN_ADD)
+	lexer.NextTokenIs(TOKEN_LEFT_PAIR)
+	lexer.LookAheadAndSkip(TOKEN_IGNORED)
+	if add.lhs, err = parseVariable(lexer); err != nil {
+		return nil, err
+	}
+	if add.lhs.isStrValue {
+		return nil, errors.New("add operation must be int value")
+	}
+	lexer.LookAheadAndSkip(TOKEN_IGNORED)
+	lexer.NextTokenIs(TOKEN_SEPARATE)
+	lexer.LookAheadAndSkip(TOKEN_IGNORED)
+	if add.rhs, err = parseVariable(lexer); err != nil {
+		return nil, err
+	}
+	if add.rhs.isStrValue {
+		return nil, errors.New("add operation must be int value")
+	}
+	lexer.LookAheadAndSkip(TOKEN_IGNORED)
+	lexer.NextTokenIs(TOKEN_RIGHT_PAIR)
+	lexer.LookAheadAndSkip(TOKEN_IGNORED)
+	return &add, nil
+}
+
+/*
+func parseAddVar(lexer *Lexer,add *Variable)(*Add, error) {
+	var err error
+	if add, err = parseVariable(lexer); err != nil {
+		return nil, err
+	}
+	if add.isStrValue {
+		return nil, errors.New("add operation must be int value")
+	}
+}
+*/
+
+//TODO support math operation
 func parseStatement(lexer *Lexer) (Statement, error) {
 	switch lexer.LookAhead() {
 	case TOKEN_PRINT:
 		return parsePrint(lexer)
-	case TOKEN_VARIABLE_STR:
+	case TOKEN_ADD:
+		return parseAdd(lexer)
+	case TOKEN_VARIABLE_STR, TOKEN_VARIABLE_INT:
 		return parseAssignment(lexer)
 	default:
 		return nil, errors.New("parseStatement(): unknown Statement.")

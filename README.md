@@ -13,7 +13,7 @@ AssignmentInt   ::= VariableInt Ignored "=" Ignored Int Ignored
 Add             ::= "add" "(" Ignored VariableInt Ignored "," Ignored VariableInt Ignored ")" Ignored
 Sub             ::= "sub" "(" Ignored VariableInt Ignored "," Ignored VariableInt Ignored ")" Ignored
 Mult            ::= "Mult" "(" Ignored VariableInt Ignored "," Ignored VariableInt Ignored ")" Ignored
-Div            ::= "Div" "(" Ignored VariableInt Ignored "," Ignored VariableInt Ignored ")" Ignored
+Div             ::= "Div" "(" Ignored VariableInt Ignored "," Ignored VariableInt Ignored ")" Ignored
 Print           ::= "print" "(" Ignored Variable Ignored ")" Ignored
 Statement       ::= Print | Assignment | Add | Sub | Mult | Div
 SourceCode      ::= Statement+ 
