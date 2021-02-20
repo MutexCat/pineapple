@@ -6,6 +6,8 @@ Based on the origin pineapple language,
 i also expanded it with math operations
  in a stupid way.
 
+Thanks for [karminski-牙医](https://github.com/karminski)
+
 ## Usage:
 ```
 go build
