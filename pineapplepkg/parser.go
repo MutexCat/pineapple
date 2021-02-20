@@ -93,32 +93,42 @@ func parsePrint(lexer *Lexer) (*Print, error) {
 	return &print, err
 }
 
-func parseAdd(lexer *Lexer) (*Add, error) {
-	var add Add
+var mathOperatorMap = map[int]int{
+	TOKEN_ADD:  MATH_ADD,
+	TOKEN_SUB:  MATH_SUB,
+	TOKEN_MUIT: MATH_MUTL,
+	TOKEN_DIV:  MATH_DIV,
+}
+
+//TODO
+func parseMath(lexer *Lexer, which int) (*MathOperation, error) {
+	var operator MathOperation
 	var err error
 
-	lexer.NextTokenIs(TOKEN_ADD)
+	operator.which = mathOperatorMap[which]
+
+	lexer.NextTokenIs(which)
 	lexer.NextTokenIs(TOKEN_LEFT_PAIR)
 	lexer.LookAheadAndSkip(TOKEN_IGNORED)
-	if add.lhs, err = parseVariable(lexer); err != nil {
+	if operator.lhs, err = parseVariable(lexer); err != nil {
 		return nil, err
 	}
-	if add.lhs.isStrValue {
+	if operator.lhs.isStrValue {
 		return nil, errors.New("add operation must be int value")
 	}
 	lexer.LookAheadAndSkip(TOKEN_IGNORED)
 	lexer.NextTokenIs(TOKEN_SEPARATE)
 	lexer.LookAheadAndSkip(TOKEN_IGNORED)
-	if add.rhs, err = parseVariable(lexer); err != nil {
+	if operator.rhs, err = parseVariable(lexer); err != nil {
 		return nil, err
 	}
-	if add.rhs.isStrValue {
+	if operator.rhs.isStrValue {
 		return nil, errors.New("add operation must be int value")
 	}
 	lexer.LookAheadAndSkip(TOKEN_IGNORED)
 	lexer.NextTokenIs(TOKEN_RIGHT_PAIR)
 	lexer.LookAheadAndSkip(TOKEN_IGNORED)
-	return &add, nil
+	return &operator, nil
 }
 
 /*
@@ -139,7 +149,13 @@ func parseStatement(lexer *Lexer) (Statement, error) {
 	case TOKEN_PRINT:
 		return parsePrint(lexer)
 	case TOKEN_ADD:
-		return parseAdd(lexer)
+		return parseMath(lexer, TOKEN_ADD)
+	case TOKEN_SUB:
+		return parseMath(lexer, TOKEN_SUB)
+	case TOKEN_MUIT:
+		return parseMath(lexer, TOKEN_MUIT)
+	case TOKEN_DIV:
+		return parseMath(lexer, TOKEN_DIV)
 	case TOKEN_VARIABLE_STR, TOKEN_VARIABLE_INT:
 		return parseAssignment(lexer)
 	default:

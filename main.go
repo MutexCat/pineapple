@@ -10,6 +10,7 @@ import (
 func main() {
 
 	// read file
+
 	args := os.Args
 	if len(args) != 2 {
 		fmt.Printf("Usage: %s filename\n", args[0])

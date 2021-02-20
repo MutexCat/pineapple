@@ -1,5 +1,17 @@
 # pineapple
 pineapple programming language demo.
+This repository is an implementation of the [pineapple language tutorial](https://github.com/karminski/pineapple)
+which is very helpful to Golang learners.
+Based on the origin pineapple language,
+i also expanded it with math operations
+ in a stupid way.
+
+## Usage:
+```
+go build
+
+./pineapple hello
+```
 
 ```
 SourceCharacter ::=  #x0009 | #x000A | #x000D | [#x0020-#xFFFF]

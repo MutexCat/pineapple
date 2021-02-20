@@ -40,14 +40,15 @@ func resolveStatement(g *GlobalVariables, statement Statement) error {
 		return resolveAssignment(g, assignment)
 	} else if print, ok := statement.(*Print); ok {
 		return resolvePrint(g, print)
-	} else if add, ok := statement.(*Add); ok {
-		return resolveAdd(g, add)
+	} else if operator, ok := statement.(*MathOperation); ok {
+		return resolveMath(g, operator)
 	} else {
 		return errors.New("resolveStatement(): undefined statement type.")
 	}
 
 }
 
+//TODO
 func resolveAssignment(g *GlobalVariables, assignment *Assignment) error {
 	varName := ""
 	if varName = assignment.variable.name; varName == "" {
@@ -58,15 +59,30 @@ func resolveAssignment(g *GlobalVariables, assignment *Assignment) error {
 	return nil
 }
 
-func resolveAdd(g *GlobalVariables, add *Add) error {
-	lhs := g.Variables[add.lhs.name]
-	rhs := g.Variables[add.rhs.name]
+//TODO
+func resolveMath(g *GlobalVariables, operator *MathOperation) error {
+	lhs := g.Variables[operator.lhs.name]
+	rhs := g.Variables[operator.rhs.name]
 	if lhs.isStrValue || rhs.isStrValue || lhs.value == "" || rhs.value == "" {
 		return errors.New("resolveAdd():add operation needs int value or variable must not be empty")
 	}
 	lhsValue, _ := strconv.Atoi(lhs.value)
 	rhsValue, _ := strconv.Atoi(rhs.value)
-	totalValue := lhsValue + rhsValue
+	resultFunc := func(lvalue, rvalue int, operator *MathOperation) int {
+		switch operator.which {
+		case MATH_ADD:
+			return lvalue + rvalue
+		case MATH_SUB:
+			return lvalue - rvalue
+		case MATH_MUTL:
+			return lvalue * rvalue
+		case MATH_DIV:
+			return lvalue / rvalue
+		default:
+			return 0
+		}
+	}
+	totalValue := resultFunc(lhsValue, rhsValue, operator)
 	totalValueStr := strconv.Itoa(totalValue)
 	lhs.value = totalValueStr
 	return nil

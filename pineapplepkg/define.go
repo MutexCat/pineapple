@@ -17,7 +17,16 @@ type Print struct {
 	variable *Variable
 }
 
-type Add struct {
+const (
+	MATH_ADD = iota
+	MATH_SUB
+	MATH_MUTL
+	MATH_DIV
+)
+
+//TODO
+type MathOperation struct {
+	which   int
 	lineNUm int
 	lhs     *Variable
 	rhs     *Variable
@@ -27,7 +36,7 @@ type Statement interface{}
 
 var _ Statement = (*Print)(nil)
 var _ Statement = (*Assignment)(nil)
-var _ Statement = (*Add)(nil)
+var _ Statement = (*MathOperation)(nil)
 
 type SourceCode struct {
 	LineNum    int
