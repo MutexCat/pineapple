@@ -1,9 +1,9 @@
 # pineapple
-pineapple programming language demo.
+Pineapple programming language demo.
 This repository is an implementation of the [pineapple language tutorial](https://github.com/karminski/pineapple)
 which is very helpful to Golang learners.
 Based on the origin pineapple language,
-i also expanded it with math operations
+I also expanded it with math operations
  in a stupid way.
 
 Thanks for [karminski-牙医](https://github.com/karminski)
